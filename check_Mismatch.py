@@ -6,7 +6,7 @@ def count_files_in_directory(directory):
     """
     return len([file for file in os.listdir(directory) if os.path.isfile(os.path.join(directory, file))])
 
-def check_ct_mask_image_counts(root_path):
+def check_ct_mask_image_counts(root_path, ReverseLogic = False):
     """
     Check if the number of images in the CT folder matches the number of images in the Mask folder for each HCC folder.
     """
@@ -20,13 +20,16 @@ def check_ct_mask_image_counts(root_path):
                 ct_count = count_files_in_directory(ct_dir)
                 mask_count = count_files_in_directory(mask_dir)
 
-                if ct_count != mask_count:
-                    print(f"Mismatch in {dir_name}: CT has {ct_count} images, Mask has {mask_count} images")
+                if ReverseLogic and ct_count == mask_count:
+                    print(f"NO MISMATCH in {dir_name}: CT has {ct_count} images, Mask has {mask_count} images")
+                elif ct_count != mask_count:
+                    print(f"Mismatch in {dir_name}: CT has {ct_count} images, Mask has {mask_count} images")  
             else:
-                print(f"CT or Mask folder missing in {dir_name}")
+                if ReverseLogic == False:
+                    print(f"CT or Mask folder missing in {dir_name}")
 
 # Define the root path containing the folders like HCC_1, HCC_2, etc.
-root_path = r"D:\HCC_DataSet\manifest-1643035385102\output_Arterial"
+root_path = r"D:\HCC_DataSet\manifest-1643035385102\experimental_output"
 
 # Run the check
-check_ct_mask_image_counts(root_path)
+check_ct_mask_image_counts(root_path, ReverseLogic= False)

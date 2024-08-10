@@ -2,6 +2,7 @@ import os
 import numpy as np
 import pydicom
 from PIL import Image
+import re
 
 def find_segmentation_directories(root_dir):
     segmentation_dirs = []
@@ -10,6 +11,24 @@ def find_segmentation_directories(root_dir):
             if "Segmentation" in dirname:
                 segmentation_dirs.append(os.path.join(dirpath, dirname))
     return segmentation_dirs
+
+def find_non_segmentation_directories(root_dir):
+    segmentation_dirs = find_segmentation_directories(root_dir)
+    parent_directories = [os.path.dirname(seg_dir) for seg_dir in segmentation_dirs]
+    non_segmentation_dirs = []
+    temp_dir = []
+    date_pattern = r'\d{2}-\d{2}-\d{4}'
+    for dirpath, dirnames, filenames in os.walk(root_dir):
+        for dirname in dirnames:
+            match = re.search(date_pattern, dirname)
+            if match:
+                temp_dir.append(os.path.join(dirpath, dirname))
+    
+    for i in temp_dir:
+        if i not in parent_directories:
+            non_segmentation_dirs.append(i)
+            
+    return non_segmentation_dirs
 
 def sort_subfolders(root_dir):
     directories = os.listdir(root_dir)
@@ -158,11 +177,13 @@ def process_segmentation_directories(root_directory_path,
                                      CT_Phase = 2):
     
     segmentation_dirs = find_segmentation_directories(root_directory_path)
+    non_seg_dir = find_non_segmentation_directories(root_directory_path)
     parent_directories = [os.path.dirname(seg_dir) for seg_dir in segmentation_dirs]
 
     output_base_dir = output_dir
     patient_count = 0
-    for parent_dir in parent_directories:
+
+    for index, parent_dir in enumerate(parent_directories):
         patient_count += 1
 
         if patient_count < starting_patient:
@@ -176,4 +197,4 @@ def process_segmentation_directories(root_directory_path,
             valid_masks = process_segmentation_files(os.path.join(parent_dir, seg_dir), output_base_dir, patient_count)
             print(valid_masks)
         # Then Process the CT files
-        process_dicom_files_in_directory(parent_dir, valid_masks, output_base_dir, patient_count, CT_Phase)
+        process_dicom_files_in_directory(non_seg_dir[index], valid_masks, output_base_dir, patient_count, CT_Phase)
