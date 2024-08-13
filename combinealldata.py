@@ -1,11 +1,13 @@
 import os
 import shutil
+from tqdm import tqdm
 
 # Define the root path containing the folders like HCC_1, HCC_2, etc.
-root_path = r"D:\HCC_DataSet\manifest-1643035385102\output-tumor-multiclass"
+root_path = r"D:\HCC_DataSet\manifest-1643035385102\output_Arterial"
+output_path = r"D:\HCC_DataSet\manifest-1643035385102\output_Arterial\Data"
 # Define the paths for the new directories to store all segmentation and CT images
-segmentation_dir = os.path.join(root_path, "masks")
-ct_dir = os.path.join(root_path, "images")
+segmentation_dir = os.path.join(output_path, "masks")
+ct_dir = os.path.join(output_path, "images")
 
 # Create the new directories if they don't exist
 os.makedirs(segmentation_dir, exist_ok=True)
@@ -19,7 +21,7 @@ seg_counter = 1
 ct_counter = 1
 
 # Loop through each folder and process the images
-for folder in folders:
+for folder in tqdm(folders):
     seg_folder = os.path.join(root_path, folder, "Mask")
     ct_folder = os.path.join(root_path, folder, "CT")
     
@@ -38,7 +40,7 @@ for folder in folders:
         dest_path = os.path.join(segmentation_dir, f"{seg_counter:04d}.png")  # Save with a serial number
         shutil.copy(src_path, dest_path)
         seg_counter += 1
-        print(f"success for Mask: {seg_counter}")
+        # print(f"success for Mask: {seg_counter}")
     
     # Copy CT images to the new directory with serial naming
     for ct_file in ct_files:
@@ -46,7 +48,7 @@ for folder in folders:
         dest_path = os.path.join(ct_dir, f"{ct_counter:04d}.png")  # Save with a serial number
         shutil.copy(src_path, dest_path)
         ct_counter += 1
-        print(f"success for CT: {ct_counter}")
+        # print(f"success for CT: {ct_counter}")
 
 print(f"Copied {seg_counter-1} segmentation images to {segmentation_dir}")
 print(f"Copied {ct_counter-1} CT images to {ct_dir}")

@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 #set parameters
 
 # Define the paths to the directories containing the images
-main_img_path = rf"D:\HCC_DataSet\manifest-1643035385102\experimental_output\HCC_6\CT"
-seg_img_path = rf"D:\HCC_DataSet\manifest-1643035385102\experimental_output\HCC_6\Mask" #ground truth
+main_img_path = rf"D:\HCC_DataSet\manifest-1643035385102\output_Arterial\HCC_101\CT"
+seg_img_path = rf"D:\HCC_DataSet\manifest-1643035385102\output_Arterial\HCC_101\Mask" #ground truth
 
 # predicted_img_mask = rf"D:\HCC_DataSet\manifest-1643035385102\results\Generated_mask\resnet50_UnetPlusPlus_Multi"
 
@@ -16,7 +16,7 @@ seg_img_path = rf"D:\HCC_DataSet\manifest-1643035385102\experimental_output\HCC_
 all_img_filenames = os.listdir(main_img_path)
 # print(all_img_filenames)
 # select 15 images
-Index = 5
+Index = 0
 Index = Index * 4                 # /// start from
 
 selected_images = all_img_filenames[Index:Index+4]
@@ -44,20 +44,20 @@ for i, img_filename in enumerate(selected_images):
     # Find the indices where the color in the mask is black [0, 0, 0]
     black_pixels = np.all(color_mask == [0, 0, 0], axis=-1)
     tumor_pixels = np.all(color_mask == [62, 73, 137], axis=-1)
-    liver_pixels = np.all(color_mask == [71, 39, 119], axis=-1)
+    liver_pixels = np.all(color_mask == [255, 255, 255], axis=-1)
 
     # Replace black pixels in the mask with the corresponding pixels from the image
     color_mask[black_pixels] = img[black_pixels]
     # predicted_mask[black_pixels] = img[black_pixels]
     # color_mask[tumor_pixels] = [255,0,0]
-    # color_mask[liver_pixels] = [130, 198, 60]
+    color_mask[liver_pixels] = [255, 0, 0]
 
     # Show the main image with the red mask overlay
     ax = axes[0, i]
     # ax.set_title(img_filename)
     ax.imshow(img)
     # ax.imshow(predicted_mask, alpha=1)
-    ax.imshow(color_mask, alpha = 0.5)  # Overlay the mask with transparency
+    ax.imshow(color_mask, alpha = 0.6)  # Overlay the mask with transparency
     ax.axis('off')
 
     if i == 0:
