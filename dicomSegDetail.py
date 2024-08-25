@@ -1,21 +1,30 @@
 import numpy as np
 import pydicom
+import pydicom_seg
+import SimpleITK as sitk
 import os
 from PIL import Image
 import matplotlib.pyplot as plt
 
-path = r'D:\HCC_DataSet\manifest-1643035385102\HCC-TACE-Seg\HCC_055\02-01-2002-NA-CT CAP LIVER-87181\5.000000-Recon 2 LIVER 2PHASE CAP-17939'
+def display_slice(slice):
+    plt.imshow(slice, cmap='gray')
+    plt.axis('off')
+    plt.show()
 
-dicom_files = os.listdir(path)
+path = r'D:\HCC_DataSet\manifest-1643035385102\HCC-TACE-Seg\HCC_003\09-12-1997-NA-AP LIVER-64595\4.000000-Recon 2 LIVER 3 PHASE AP-18688\1-001.dcm'
 
-for dicom_file in dicom_files:
+dcm = pydicom.dcmread(path)
+print(dcm.Phase)
+# reader = pydicom_seg.SegmentReader()
+# result = reader.read(dcm)
 
-    path_ = os.path.join(path, dicom_file)
-    ds = pydicom.dcmread(path_)
-    print(ds)
+# for segment_number in result.available_segments:
+#     image_data = result.segment_data(segment_number)  # directly available
+#     image = result.segment_image(segment_number)  # lazy construction
+#     print(image_data[0].shape)
 
-    break
-
+#     display_slice(image_data[30])
+    # sitk.WriteImage(image, f'/tmp/seg-{segment_number}.nrrd', True)
     # ct_image = ds.pixel_array
     # ct_image = np.array(ct_image)
 
@@ -27,11 +36,7 @@ for dicom_file in dicom_files:
 
 
 # # Function to display a specific slice
-# def display_slice(slice_index):
-#     plt.imshow(liver_mask[slice_index, :, :], cmap='gray')
-#     plt.title(f'Slice {slice_index}')
-#     plt.axis('off')
-#     plt.show()
+
 
 # # Initialize the segment number for Liver
 # liver_segment_number = None

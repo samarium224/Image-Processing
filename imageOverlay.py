@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 #set parameters
 
 # Define the paths to the directories containing the images
-main_img_path = rf"D:\HCC_DataSet\manifest-1643035385102\output_Arterial\HCC_101\CT"
-seg_img_path = rf"D:\HCC_DataSet\manifest-1643035385102\output_Arterial\HCC_101\Mask" #ground truth
+main_img_path = rf"D:\HCC_DataSet\manifest-1643035385102\output_Arterial\HCC_11\CT"
+seg_img_path = rf"D:\HCC_DataSet\manifest-1643035385102\output_Arterial\HCC_11\Mask" #ground truth
 
 # predicted_img_mask = rf"D:\HCC_DataSet\manifest-1643035385102\results\Generated_mask\resnet50_UnetPlusPlus_Multi"
 
@@ -16,7 +16,7 @@ seg_img_path = rf"D:\HCC_DataSet\manifest-1643035385102\output_Arterial\HCC_101\
 all_img_filenames = os.listdir(main_img_path)
 # print(all_img_filenames)
 # select 15 images
-Index = 0
+Index = 3
 Index = Index * 4                 # /// start from
 
 selected_images = all_img_filenames[Index:Index+4]
@@ -24,7 +24,7 @@ selected_images = all_img_filenames[Index:Index+4]
 print(selected_images)
 
 # Plot the images
-figure, axes = plt.subplots(2, 4, figsize=(10, 5))
+figure, axes = plt.subplots(2, 4, figsize=(20, 10))
 
 for i, img_filename in enumerate(selected_images):
     # Construct the full paths to the images
@@ -57,7 +57,7 @@ for i, img_filename in enumerate(selected_images):
     # ax.set_title(img_filename)
     ax.imshow(img)
     # ax.imshow(predicted_mask, alpha=1)
-    ax.imshow(color_mask, alpha = 0.6)  # Overlay the mask with transparency
+    ax.imshow(color_mask, alpha = 0.4)  # Overlay the mask with transparency
     ax.axis('off')
 
     if i == 0:

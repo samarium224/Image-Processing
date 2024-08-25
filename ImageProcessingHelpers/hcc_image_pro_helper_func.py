@@ -88,7 +88,8 @@ def process_dicom_files_in_directory(directory, ValidMasks, output_base_dir, pat
         if not hasattr(img, 'AcquisitionNumber') or img.AcquisitionNumber != CT_phase_number:
             continue
         
-        if count in ValidMasks:
+        # if count in ValidMasks:
+        if True:
             pixel_array = img.pixel_array
             
             if hasattr(img, 'WindowCenter') and hasattr(img, 'WindowWidth'):
@@ -150,6 +151,7 @@ def process_segmentation_files(segmentation_dir, output_base_dir, patient_count)
             # if img.max() > 0:
             #     rescaled_image = (np.maximum(img, 0) / img.max()) * 255
             else:
+                img = tumor
                 Valid_Masks.append(count)
                 rescaled_image = img * 255
 
@@ -177,7 +179,6 @@ def process_segmentation_directories(root_directory_path,
                                      CT_Phase = 2):
     
     segmentation_dirs = find_segmentation_directories(root_directory_path)
-    non_seg_dir = find_non_segmentation_directories(root_directory_path)
     parent_directories = [os.path.dirname(seg_dir) for seg_dir in segmentation_dirs]
 
     output_base_dir = output_dir
@@ -195,6 +196,7 @@ def process_segmentation_directories(root_directory_path,
         segmentation_subdirs = [d for d in os.listdir(parent_dir) if "Segmentation" in d]
         for seg_dir in segmentation_subdirs:
             valid_masks = process_segmentation_files(os.path.join(parent_dir, seg_dir), output_base_dir, patient_count)
-            print(valid_masks)
+
         # Then Process the CT files
-        process_dicom_files_in_directory(non_seg_dir[index], valid_masks, output_base_dir, patient_count, CT_Phase)
+        # valid_masks = []
+        # process_dicom_files_in_directory(parent_dir, valid_masks, output_base_dir, patient_count, CT_Phase)

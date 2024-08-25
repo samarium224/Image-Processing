@@ -6,5 +6,5 @@ root_directory_path = r'D:\HCC_DataSet\manifest-1643035385102\HCC-TACE-Seg'  # d
 hcc_function.process_segmentation_directories(root_directory_path,
                                               starting_patient=1, 
                                               ending_patient= 105, 
-                                            #   output_dir= "output_Delayed", 
-                                              CT_Phase= 2)
+                                              output_dir= "output_Arterial_Tumor", 
+                                              CT_Phase=2)
