@@ -1,7 +1,12 @@
-import os
-import numpy as np
-import pydicom
-from PIL import Image
 
-DATASET_PATH = r""
-OUTPUT_PATH = ""
+""" ********
+This file is required 
+for automation 
+
+navigate to this file
+before closing 
+vs code
+
+Welcome Back
+
+""" 

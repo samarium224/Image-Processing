@@ -30,11 +30,19 @@ def find_non_segmentation_directories(root_dir):
             
     return non_segmentation_dirs
 
-def sort_subfolders(root_dir):
+def sort_subfolders(root_dir, replace_str = 'HCC_'):
     directories = os.listdir(root_dir)
-    numbers = [int(name.replace('HCC_', '')) for name in directories]
+    numbers = [int(name.replace(replace_str, '')) for name in directories]
     numbers_sorted = sorted(numbers)
     sorted_file_names = [f"HCC_{number}" for number in numbers_sorted]
+    
+    return sorted_file_names
+
+def sort_img_files(root_dir, replace_str = '.png'):
+    directories = os.listdir(root_dir)
+    numbers = [int(name.replace(replace_str, '')) for name in directories]
+    numbers_sorted = sorted(numbers)
+    sorted_file_names = [f"{number}{replace_str}" for number in numbers_sorted]
     
     return sorted_file_names
 
@@ -88,8 +96,8 @@ def process_dicom_files_in_directory(directory, ValidMasks, output_base_dir, pat
         if not hasattr(img, 'AcquisitionNumber') or img.AcquisitionNumber != CT_phase_number:
             continue
         
-        # if count in ValidMasks:
-        if True:
+        if count in ValidMasks:
+        # if True:
             pixel_array = img.pixel_array
             
             if hasattr(img, 'WindowCenter') and hasattr(img, 'WindowWidth'):
@@ -151,12 +159,14 @@ def process_segmentation_files(segmentation_dir, output_base_dir, patient_count)
             # if img.max() > 0:
             #     rescaled_image = (np.maximum(img, 0) / img.max()) * 255
             else:
-                img = tumor
+                # img = tumor
                 Valid_Masks.append(count)
                 rescaled_image = img * 255
 
                 final_img = np.uint8(rescaled_image)
                 final_img = Image.fromarray(final_img, mode= "L")
+                # final_img = final_img.transpose(Image.FLIP_LEFT_RIGHT) #exection for HCC03
+                # final_img = final_img.transpose(Image.FLIP_TOP_BOTTOM) #exection for HCC03
             
                 output_dir = os.path.join(output_base_dir, f"HCC_{patient_count}/Mask")
                 os.makedirs(output_dir, exist_ok=True)
@@ -193,10 +203,10 @@ def process_segmentation_directories(root_directory_path,
             return
         
         # First Process the segmentation files
+        valid_masks = []
         segmentation_subdirs = [d for d in os.listdir(parent_dir) if "Segmentation" in d]
         for seg_dir in segmentation_subdirs:
             valid_masks = process_segmentation_files(os.path.join(parent_dir, seg_dir), output_base_dir, patient_count)
 
         # Then Process the CT files
-        # valid_masks = []
-        # process_dicom_files_in_directory(parent_dir, valid_masks, output_base_dir, patient_count, CT_Phase)
+        process_dicom_files_in_directory(parent_dir, valid_masks, output_base_dir, patient_count, CT_Phase)

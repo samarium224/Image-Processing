@@ -29,7 +29,7 @@ def check_ct_mask_image_counts(root_path, ReverseLogic = False):
                     print(f"CT or Mask folder missing in {dir_name}")
 
 # Define the root path containing the folders like HCC_1, HCC_2, etc.
-root_path = r"D:\HCC_DataSet\manifest-1643035385102\output_Delayed"
+root_path = r"D:\HCC_DataSet\manifest-1643035385102\output_PortalVenous"
 
 # Run the check
-check_ct_mask_image_counts(root_path, ReverseLogic= True)
+check_ct_mask_image_counts(root_path, ReverseLogic= False)

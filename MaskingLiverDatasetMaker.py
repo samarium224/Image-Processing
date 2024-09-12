@@ -9,6 +9,7 @@ OUTPUT_PATH = "Tumor_DATA/images"
 # Folders for images and masks
 image_folder = os.path.join(DATASET_PATH, "images")
 mask_folder = os.path.join(DATASET_PATH, "masks")
+models_predicted_mask = os.path.join(DATASET_PATH, "model_masks")
 
 # Create output directory if it doesn't exist
 os.makedirs(OUTPUT_PATH, exist_ok=True)
