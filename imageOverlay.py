@@ -7,16 +7,17 @@ from ImageProcessingHelpers import hcc_image_pro_helper_func as helper
 #set parameters
 
 # Define the paths to the directories containing the images
-main_img_path = rf"D:\HCC_DataSet\manifest-1643035385102\Tumor_DATA\images"
-seg_img_path = rf"D:\HCC_DataSet\manifest-1643035385102\Tumor_DATA\masks" #ground truth
+main_img_path = rf"D:\HCC_DataSet\manifest-1643035385102\Tumor_DATA\low_dice_images"
+seg_img_path = rf"D:\HCC_DataSet\manifest-1643035385102\Tumor_DATA\low_dice_masks" #ground truth
 
 # predicted_img_mask = rf"D:\HCC_DataSet\manifest-1643035385102\results\Generated_mask\resnet50_UnetPlusPlus_Multi"
 
 # Get the list of all images in the CT directory
-all_img_filenames = helper.sort_img_files(main_img_path)
+# all_img_filenames = helper.sort_img_files(main_img_path)
+all_img_filenames = os.listdir(main_img_path)
 # print(all_img_filenames)
 # select 15 images 11 15
-Index = 13
+Index = 4
 Index = Index * 4                 # /// start from
 
 selected_images = all_img_filenames[Index:Index+4]
@@ -28,8 +29,8 @@ figure, axes = plt.subplots(2, 4, figsize=(10, 5))
 
 for i, img_filename in enumerate(selected_images):
     # Construct the full paths to the images
-    ground_truth_img_full_path = os.path.join(seg_img_path, "00" + img_filename)
-    main_img_full_path = os.path.join(main_img_path, "00" + img_filename)
+    ground_truth_img_full_path = os.path.join(seg_img_path, img_filename)
+    main_img_full_path = os.path.join(main_img_path, img_filename)
     # predicted_img_full_path = os.path.join(predicted_img_mask, img_filename)
 
     # Load the main image and the mask
@@ -57,7 +58,7 @@ for i, img_filename in enumerate(selected_images):
     # ax.set_title(img_filename)
     ax.imshow(img)
     # ax.imshow(predicted_mask, alpha=1)
-    ax.imshow(color_mask, alpha = 0.3)  # Overlay the mask with transparency
+    ax.imshow(color_mask, alpha = 0.0)  # Overlay the mask with transparency
     ax.axis('off')
 
     if i == 0:

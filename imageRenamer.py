@@ -1,7 +1,7 @@
 import os
 from ImageProcessingHelpers import hcc_image_pro_helper_func as helper
 # Define the path to the folder containing the images
-folder_path = r"D:\HCC_DataSet\manifest-1643035385102\output_PortalVenous\HCC_4\Mask"
+folder_path = r"D:\HCC_DataSet\manifest-1643035385102\Tumor_DATA\tumor_CLAHE\images"
 
 # List all files in the folder and filter out only image files
 images =helper.sort_img_files(folder_path)

@@ -159,14 +159,14 @@ def process_segmentation_files(segmentation_dir, output_base_dir, patient_count)
             # if img.max() > 0:
             #     rescaled_image = (np.maximum(img, 0) / img.max()) * 255
             else:
-                # img = tumor
+                img = tumor
                 Valid_Masks.append(count)
                 rescaled_image = img * 255
 
                 final_img = np.uint8(rescaled_image)
                 final_img = Image.fromarray(final_img, mode= "L")
-                # final_img = final_img.transpose(Image.FLIP_LEFT_RIGHT) #exection for HCC03
-                # final_img = final_img.transpose(Image.FLIP_TOP_BOTTOM) #exection for HCC03
+                final_img = final_img.transpose(Image.FLIP_LEFT_RIGHT) #exection for HCC03
+                final_img = final_img.transpose(Image.FLIP_TOP_BOTTOM) #exection for HCC03
             
                 output_dir = os.path.join(output_base_dir, f"HCC_{patient_count}/Mask")
                 os.makedirs(output_dir, exist_ok=True)
